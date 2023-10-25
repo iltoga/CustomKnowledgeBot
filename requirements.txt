@@ -2,3 +2,5 @@ langchain
 pdfminer.six
 gpt4all
 chromadb
+pypdf
+dotenv
