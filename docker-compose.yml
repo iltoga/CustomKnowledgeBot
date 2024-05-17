@@ -11,6 +11,9 @@ services:
       - /home/iltoga/revisbali/telegrambot/knowledge_base:/app/knowledge_base
     command: ["python", "main.py"]
     restart: unless-stopped
+    networks:
+      - dockernet
+
 networks:
   dockernet:
     external: true
