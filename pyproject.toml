@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "revisbali-cs-bot"
+version = "0.1.0"
+description = ""
+authors = ["Stefano Galassi <galaxy73.it@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11.0,<3.13"
+langchain = "^0.1.20"
+pdfminer-six = "^20231228"
+gpt4all = "^2.6.0"
+chromadb = "0.4.24"
+pypdf = "^4.2.0"
+python-dotenv = "^1.0.1"
+langchain-groq = "^0.1.3"
+langchainhub = "^0.1.15"
+nltk = "^3.8.1"
+langchain-openai = "^0.1.6"
+nest-asyncio = "^1.6.0"
+bs4 = "^0.0.2"
+python-telegram-bot = "^21.1.1"
+fastapi = "^0.111.0"
+uvicorn = "^0.29.0"
+httpx = "^0.27.0"
+flashrank = "^0.2.5"
+pytest = "^8.2.0"
+jq = "^1.7.0"
+langchain-cohere = "^0.1.5"
+
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md
+useLibraryCodeForTypes = true
+exclude = [".cache"]
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/configuration/
+select = ['E', 'W', 'F', 'I', 'B', 'C4', 'ARG', 'SIM']
+ignore = ['W291', 'W292', 'W293']
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
