@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  customknowledgebot:
-    name: customknowledgebot
+  revisbali-telegram-bot:
+    container_name: revisbali-telegram-bot
     build: .
     ports:
       - "6000:6000"
