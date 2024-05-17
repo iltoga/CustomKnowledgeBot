@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   customknowledgebot:
+    name: customknowledgebot
     build: .
     ports:
       - "6000:6000"
