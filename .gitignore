@@ -164,4 +164,7 @@ cython_debug/
 
 knowledge_base/*
 !knowledge_base/
+test_data/*
+!test_data/
 .DS_Store
+chroma
