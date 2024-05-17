@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   revisbali-telegram-bot:
     container_name: revisbali-telegram-bot
