@@ -26,8 +26,12 @@ jobs:
           command_timeout: 30m
           script: |
             # Ensure the .ssh directory exists and set the correct permissions
-            # mkdir -p ~/.ssh
-            # chmod 700 ~/.ssh
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+
+            # Ensure the deploy key is available and correctly used
+            echo "${{ secrets.REPO_KEY_ALPHAVPS }}" > ~/.ssh/id_rsa_github_deploy_key
+            chmod 600 ~/.ssh/id_rsa_github_deploy_key
 
             # Check if CustomKnowledgeBot directory exists
             if [ ! -d "$HOME/.docker/CustomKnowledgeBot" ]; then
@@ -35,7 +39,7 @@ jobs:
               # Navigate to the .docker directory
               cd $HOME/.docker
               # Clone the CustomKnowledgeBot repository using the deploy key
-              GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git clone git@github.com:iltoga/CustomKnowledgeBot.git
+              GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github_deploy_key" git clone git@github.com:iltoga/CustomKnowledgeBot.git
             else
               echo "CustomKnowledgeBot directory already exists."
             fi
@@ -46,7 +50,7 @@ jobs:
             # Make sure we are on the main branch
             git checkout main
             # Pull the latest changes using the deploy key
-            GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git pull
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github_deploy_key" git pull
 
             # Prune Docker system
             yes | docker system prune -a
