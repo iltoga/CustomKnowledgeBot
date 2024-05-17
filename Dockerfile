@@ -22,9 +22,6 @@ RUN poetry config virtualenvs.create false && poetry install --only main
 # Copy the rest of the application code to the working directory
 COPY . /app
 
-# Copy .env file to the working directory if it exists
-RUN if [ -f .env ]; then cp .env /app/.env; fi
-
 # Expose the port that the app will run on
 EXPOSE 6000
 
