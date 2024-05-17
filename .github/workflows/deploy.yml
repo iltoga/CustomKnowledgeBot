@@ -7,51 +7,51 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Use ubuntu-latest for the GitHub Actions runner
+    runs-on: ubuntu-latest # Use ubuntu-latest for the GitHub Actions runner
 
     steps:
-    - name: Add GitHub.com to known hosts
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
-
-    - name: SSH into VPS and run commands
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_SSH_KEY_ALPHAVPS }}
-        timeout: 30m
-        command_timeout: 30m
-        script: |
-          # Ensure the .ssh directory exists and set the correct permissions
+      - name: Add GitHub.com to known hosts
+        run: |
           mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
-          # Check if CustomKnowledgeBot directory exists
-          if [ ! -d "$HOME/.docker/CustomKnowledgeBot" ]; then
-            echo "CustomKnowledgeBot directory does not exist. Cloning the repository."
-            # Navigate to the .docker directory
-            cd $HOME/.docker
-            # Clone the CustomKnowledgeBot repository using the deploy key
-            GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git clone git@github.com:iltoga/CustomKnowledgeBot.git
-          else
-            echo "CustomKnowledgeBot directory already exists."
-          fi
+      - name: SSH into VPS and run commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY_ALPHAVPS }}
+          timeout: 30m
+          command_timeout: 30m
+          script: |
+            # Ensure the .ssh directory exists and set the correct permissions
+            # mkdir -p ~/.ssh
+            # chmod 700 ~/.ssh
 
-          # Navigate to the CustomKnowledgeBot directory
-          cd $HOME/.docker/CustomKnowledgeBot
+            # Check if CustomKnowledgeBot directory exists
+            if [ ! -d "$HOME/.docker/CustomKnowledgeBot" ]; then
+              echo "CustomKnowledgeBot directory does not exist. Cloning the repository."
+              # Navigate to the .docker directory
+              cd $HOME/.docker
+              # Clone the CustomKnowledgeBot repository using the deploy key
+              GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git clone git@github.com:iltoga/CustomKnowledgeBot.git
+            else
+              echo "CustomKnowledgeBot directory already exists."
+            fi
 
-          # Make sure we are on the main branch
-          git checkout main
-          # Pull the latest changes using the deploy key
-          GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git pull
+            # Navigate to the CustomKnowledgeBot directory
+            cd $HOME/.docker/CustomKnowledgeBot
 
-          # Prune Docker system
-          yes | docker system prune -a
+            # Make sure we are on the main branch
+            git checkout main
+            # Pull the latest changes using the deploy key
+            GIT_SSH_COMMAND="ssh -i /home/iltoga/.ssh/id_rsa_github_deploy_key" git pull
 
-          # Build and run the Docker Compose services
-          docker compose build --no-cache
-          docker compose down
-          docker compose up -d
+            # Prune Docker system
+            yes | docker system prune -a
+
+            # Build and run the Docker Compose services
+            docker compose build --no-cache
+            docker compose down
+            docker compose up -d
